@@ -67,8 +67,8 @@ def main(word_file):
                 time.sleep(1)
 
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        main()
+    if len (sys.argv) == 2:
+        main(sys.argv[1])
     else:
         sys.exit('Usage: python finder.py word_file')
 
