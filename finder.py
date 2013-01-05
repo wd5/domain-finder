@@ -1,14 +1,22 @@
 #!/usr/bin/python
 
-import socket, sys
+import re
+import socket
+import sys
+import time
 
 PORT = 43
-REFERER = 'whois.nic.io'
+SERVER = 'whois.nic.io'
+WORD_FILE = '/usr/share/dict/words'
 
-def whois(server , query) :
+class IOSearch(object):
+    def __init__(self):
+        pass
+
+def whois(query) :
     s = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
     try:
-        s.connect((server , 43))
+        s.connect((SERVER , 43))
     except socket.error, msg:
         print 'Socket connection error ' + msg
         sys.exit();
@@ -23,6 +31,7 @@ def whois(server , query) :
     s.close()
     return msg
 
+# Check if available 
 def parse_response(resp):
     expr = r'Available'
     found = re.search(expr, resp)
@@ -31,22 +40,35 @@ def parse_response(resp):
     return False
         
 def search(domain):
-    result = whois(REFERER, domain)
+    result = whois(domain)
     return result.splitlines()[0]
 
 def make_full_domain(word):
-    return "%s.io" % (word)
+    full_domain = "%s.io" % (word)
+    return full_domain.lower()
 
-def run_search():
-    results = { }
-    with open('words.txt', 'r') as file:
+def word_starts_with(word, letter):
+    return word[0] == letter
+
+# Save the search result to disk
+def save_result(domain):
+    with open("available.txt", "a") as f:
+        f.write(domain + '\n')
+
+def main(word_file):
+    with open(word_file, 'r') as file:
         for line in file:
-            domain = make_full_domain(line.strip())
-            print domain
-            response = parse_response(search(domain))
-            if response:
-                print "Found domain %s" % (domain)
-            else:
-                print "Domain %s Not available" % (domain)
-        
-        
+            word = line.strip()
+            if (len(word) > 4):
+                domain = make_full_domain(word)
+                response = parse_response(search(domain))
+                if response: 
+                    save_result(domain)
+                time.sleep(1)
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        main()
+    else:
+        sys.exit('Usage: python finder.py word_file')
+
