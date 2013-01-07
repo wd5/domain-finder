@@ -77,5 +77,5 @@ if __name__ == '__main__':
         upper = sys.argv[3]
         main(sys.argv[1], sys.argv[2], lower, upper)
     else:
-        sys.exit('Usage: python finder.py word_file letter')
+        sys.exit('Usage: python finder.py word_file letter upper_bound')
 
