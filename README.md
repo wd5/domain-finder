@@ -2,7 +2,7 @@
 
 A quick and dirty tool for finding available single word .io domains
 
-![]()
+![](https://raw.github.com/owainlewis/domain-finder/master/preview.png)
 
 ## Use
 
