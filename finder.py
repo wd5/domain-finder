@@ -56,15 +56,18 @@ def save_result(domain):
         f.write(domain + '\n')
 
 def main(word_file):
-    with open(word_file, 'r') as file:
-        for line in file:
-            word = line.strip()
-            if (len(word) > 4):
-                domain = make_full_domain(word)
-                response = parse_response(search(domain))
-                if response: 
-                    save_result(domain)
-                time.sleep(1)
+    try:
+      with open(word_file, 'r') as file:
+          for line in file:
+              word = line.strip()
+              if (len(word) > 4):
+                  domain = make_full_domain(word)
+                  response = parse_response(search(domain))
+                  if response: 
+                      print "Found domain %s" % (domain)
+                      save_result(domain)
+    except KeyboardInterrupt:
+        sys.exit(1)
 
 if __name__ == '__main__':
     if len (sys.argv) == 2:
