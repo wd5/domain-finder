@@ -47,27 +47,32 @@ def word_starts_with(word, letter):
     return word[0] == letter
 
 # Save the search result to disk
-def save_result(domain):
-    with open("available.txt", "a") as f:
+def save_result(domain, letter):
+    file_name = "%s.txt" % letter
+    with open(file_name, "a") as f:
         f.write(domain + '\n')
 
-def main(word_file):
+def main(word_file, letter='a'):
     try:
       with open(word_file, 'r') as file:
           for line in file:
-              word = line.strip()
-              if (len(word) > 4):
-                  domain = make_full_domain(word)
-                  response = parse_response(search(domain))
-                  if response: 
-                      print "Found domain %s" % (domain)
-                      save_result(domain)
+              if line[0] is letter:
+                  word = line.strip()
+                  if (len(word) > 4):
+                      domain = make_full_domain(word)
+                      try:
+                        response = parse_response(search(domain))
+                        if response: 
+                            print "Found domain %s" % (domain)
+                            save_result(domain, letter)
+                      except: pass
+
     except KeyboardInterrupt:
         sys.exit(1)
 
 if __name__ == '__main__':
-    if len (sys.argv) == 2:
-        main(sys.argv[1])
+    if len (sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2])
     else:
-        sys.exit('Usage: python finder.py word_file')
+        sys.exit('Usage: python finder.py word_file letter')
 
