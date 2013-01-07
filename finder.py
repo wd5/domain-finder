@@ -9,10 +9,6 @@ PORT = 43
 SERVER = 'whois.nic.io'
 WORD_FILE = '/usr/share/dict/words'
 
-class IOSearch(object):
-    def __init__(self):
-        pass
-
 def whois(query) :
     s = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
     try:
