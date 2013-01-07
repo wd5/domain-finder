@@ -14,7 +14,7 @@ Because the word file is so large the second argument is a letter (i.e words sta
 
 Arguments are:
 
-finder.py <path_to_dict> <letter_to_search> <max_word_length>
+finder.py path_to_dict letter_to_search max_word_length
 
 ```python
 
